@@ -18,6 +18,7 @@ use Ivory\GoogleMap\Overlays\EncodedPolyline;
 use Ivory\GoogleMap\Services\AbstractService;
 use Ivory\GoogleMap\Services\Base\Distance;
 use Ivory\GoogleMap\Services\Base\Duration;
+use Ivory\GoogleMap\Services\Base\TransitDetails;
 use Widop\HttpAdapter\HttpAdapterInterface;
 
 /**
@@ -392,6 +393,19 @@ class Directions extends AbstractService
         $encodedPolyline = new EncodedPolyline($directionsStep->polyline->points);
         $startLocation = new Coordinate($directionsStep->start_location->lat, $directionsStep->start_location->lng);
         $travelMode = $directionsStep->travel_mode;
+        $transitDetails = isset($directionsStep->transit_details) 
+            ? new TransitDetails(
+                $directionsStep->transit_details->arrival_stop,
+                $directionsStep->transit_details->arrival_time,
+                $directionsStep->transit_details->departure_stop,
+                $directionsStep->transit_details->departure_time,
+                $directionsStep->transit_details->headsign,
+                $directionsStep->transit_details->line,
+                $directionsStep->transit_details->num_stops
+            )
+            : null
+        ;
+            
 
         return new DirectionsStep(
             $distance,
@@ -400,7 +414,8 @@ class Directions extends AbstractService
             $instructions,
             $encodedPolyline,
             $startLocation,
-            $travelMode
+            $travelMode,
+            $transitDetails
         );
     }
 }

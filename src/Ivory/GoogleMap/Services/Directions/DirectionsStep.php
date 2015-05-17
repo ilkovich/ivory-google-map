@@ -17,6 +17,7 @@ use Ivory\GoogleMap\Overlays\EncodedPolyline;
 use Ivory\GoogleMap\Services\Base\Distance;
 use Ivory\GoogleMap\Services\Base\Duration;
 use Ivory\GoogleMap\Services\Base\TravelMode;
+use Ivory\GoogleMap\Services\Base\TransitDetails;
 
 /**
  * A directions step which describes a google map directions step.
@@ -47,6 +48,9 @@ class DirectionsStep
     /** @var string */
     protected $travelMode;
 
+    /** @var \Ivory\GoogleMap\Services\Base\TransitDetails */
+    protected $transitDetails;
+
     /**
      * Creates a directions step.
      *
@@ -65,7 +69,8 @@ class DirectionsStep
         $instructions,
         EncodedPolyline $encodedPolyline,
         Coordinate $startLocation,
-        $travelMode
+        $travelMode,
+        $transitDetails
     ) {
         $this->setDistance($distance);
         $this->setDuration($duration);
@@ -74,6 +79,8 @@ class DirectionsStep
         $this->setEncodedPolyline($encodedPolyline);
         $this->setStartLocation($startLocation);
         $this->setTravelMode($travelMode);
+        if($transitDetails) 
+            $this->setTransitDetails($transitDetails);
     }
 
     /**
@@ -226,5 +233,13 @@ class DirectionsStep
         }
 
         $this->travelMode = $travelMode;
+    }
+
+    public function setTransitDetails(TransitDetails $transitDetails) {
+        $this->transitDetails = $transitDetails;
+    }
+
+    public function getTransitDetails() {
+        return $this->transitDetails;
     }
 }
